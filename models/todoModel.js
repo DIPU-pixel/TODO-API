@@ -1,32 +1,17 @@
 // models/todoModel.js
-let todos = [];
-let idCounter = 1;
+const mongoose = require('mongoose');
 
-const getAllTodos = () => todos;
+const todoSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    completed: {
+        type: Boolean,
+        default: false
+    }
+});
 
-const getTodoById = (id) => todos.find(todo => todo.id === id);
+const Todo = mongoose.model('Todo', todoSchema);
 
-const createTodo = (text) => {
-  const newTodo = { id: idCounter++, text, completed: false };
-  todos.push(newTodo);
-  return newTodo;
-};
-
-const updateTodo = (id, updatedTodo) => {
-  const index = todos.findIndex(todo => todo.id === id);
-  if (index !== -1) {
-    todos[index] = { ...todos[index], ...updatedTodo };
-    return todos[index];
-  }
-  return null;
-};
-
-const deleteTodo = (id) => {
-  const index = todos.findIndex(todo => todo.id === id);
-  if (index !== -1) {
-    return todos.splice(index, 1);
-  }
-  return null;
-};
-
-module.exports = { getAllTodos, getTodoById, createTodo, updateTodo, deleteTodo };
+module.exports = Todo;
